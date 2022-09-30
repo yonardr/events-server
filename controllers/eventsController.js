@@ -19,18 +19,20 @@ class EventsController {
 
         if (!req.files) return next(ApiError.badRequest('Не заполенено поле img'))
 
+        const {name, description, ref_video, ref_buy, price} = req.body
         const {img} = req.files
         const fileName = uuid.v4() + ".jpg"
-        img.mv(path.resolve(__dirname, '..', 'static', fileName)).catch(e => next(ApiError.internal(e)))
+
 
         await Events.create({
-            name: req.body.name,
-            description: req.body.description,
-            ref_video: req.body.ref_video,
-            ref_buy: req.body.ref_buy,
-            price: req.body.price,
+            name: name,
+            description: description,
+            ref_video: ref_video,
+            ref_buy: ref_buy,
+            price:price,
             img: fileName
         }).then(data => {
+            img.mv(path.resolve(__dirname, '..', 'static', fileName)).catch(e => next(ApiError.internal(e)))
             return res.json({message: 'Мероприятие добавлено'})
         }).catch(e => {
             console.log(e)
