@@ -29,7 +29,7 @@ class EventsController {
             description: description,
             ref_video: ref_video,
             ref_buy: ref_buy,
-            price:price,
+            price: price,
             img: fileName
         }).then(data => {
             img.mv(path.resolve(__dirname, '..', 'static', fileName)).catch(e => next(ApiError.internal(e)))
@@ -62,8 +62,7 @@ class EventsController {
             })
 
             return EditDefault(res, req, next, arr)
-        }
-        else {
+        } else {
             return EditDefault(res, req, next, arr)
         }
 
@@ -73,8 +72,11 @@ class EventsController {
     async deleteEvents(req, res, next) {
         const {id} = req.body
 
-        await Events.destroy({where: {id: id}}).then(data => {
-            return res.json({message: `Мероприятие с номером ${id} удалено успешно`})
+        await Events.findOne({where: {id: id}}).then(async stat => {
+             await Events.destroy({where: {id: id}}).then(async data => {
+                 await fs.unlink(`../events/static/${stat.img}`, err => console.log(err))
+                return res.json({message: `Мероприятие с номером ${id} удалено успешно`})
+            })
         }).catch(err => {
             console.log(err)
             return next(ApiError.badRequest('Мероприятия с таким номером не существует'))
