@@ -16,6 +16,18 @@ const Events = seq.define("events", {
         type: DataTypes.STRING,
         allowNull: true
     },
+    place: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    date: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    age_limit: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     img: {
         type: DataTypes.STRING,
         allowNull: false
@@ -29,7 +41,7 @@ const Events = seq.define("events", {
         allowNull: true
     },
     price: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
     }
 

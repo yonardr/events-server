@@ -19,7 +19,7 @@ class EventsController {
 
         if (!req.files) return next(ApiError.badRequest('Не заполенено поле img'))
 
-        const {name, description, ref_video, ref_buy, price} = req.body
+        const {name, description, place, date, age_limit, ref_video, ref_buy, price} = req.body
         const {img} = req.files
         const fileName = uuid.v4() + ".jpg"
 
@@ -27,6 +27,9 @@ class EventsController {
         await Events.create({
             name: name,
             description: description,
+            place: place,
+            date: date,
+            age_limit: age_limit,
             ref_video: ref_video,
             ref_buy: ref_buy,
             price: price,

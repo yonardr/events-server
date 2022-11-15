@@ -6,8 +6,9 @@ module.exports = async function (res, req, next, arr){
 
     for (let item in arr) {
         if (item === 'name' || item === 'description' ||
+            item === 'place' || item === 'date' ||
             item === 'ref_video' || item === 'ref_buy' ||
-            item === 'price' || item === 'img') {
+            item === 'price' || item === 'age_limit' || item === 'img' ) {
             await Events.update({[item]: arr[item]}, {where: {id: arr['id']}}).then(data =>{
                 if(item !== 'img') buff.push({message : `Параметр ${item} обновлен на ${arr[item]}`})
                 else buff.push({message : `Фото обновлено`})
