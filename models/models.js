@@ -13,7 +13,7 @@ const Events = seq.define("events", {
         allowNull: false
     },
     description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true
     },
     place: {

@@ -14,12 +14,23 @@ class EventsController {
             return next(ApiError.internal(err))
         });
     }
+    async getOne(req, res, next) {
+        const id = req.params.id
+        console.log(id)
+        await Events.findOne({where: {id : id}}).then(e => {
+            return res.json(e);
+        }).catch(err => {
+            console.log(err)
+            return next(ApiError.internal(err))
+        });
+    }
 
     async createEvent(req, res, next) {
 
         if (!req.files) return next(ApiError.badRequest('Не заполенено поле img'))
 
         const {name, description, place, date, age_limit, ref_video, ref_buy, price} = req.body
+
         const {img} = req.files
         const fileName = uuid.v4() + ".jpg"
 
@@ -38,8 +49,8 @@ class EventsController {
             img.mv(path.resolve(__dirname, '..', 'static', fileName)).catch(e => next(ApiError.internal(e)))
             return res.json({message: 'Мероприятие добавлено'})
         }).catch(e => {
-            console.log(e)
-            return next(ApiError.badRequest('Не заполенены все поля'))
+            //console.log(e, 'оШИИИБКАКАБА БАБКБА КБ АБ')
+            return next(ApiError.badRequest('Не заполенены все поля ' + e))
         })
     }
 
@@ -73,11 +84,10 @@ class EventsController {
 
 
     async deleteEvents(req, res, next) {
-        const {id} = req.body
-
+        const id = req.params.id
         await Events.findOne({where: {id: id}}).then(async stat => {
              await Events.destroy({where: {id: id}}).then(async data => {
-                 await fs.unlink(`../events/static/${stat.img}`, err => console.log(err))
+                 await fs.unlink(`../static/${stat.img}`, err => console.log(err))
                 return res.json({message: `Мероприятие с номером ${id} удалено успешно`})
             })
         }).catch(err => {
