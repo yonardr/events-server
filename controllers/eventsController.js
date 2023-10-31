@@ -65,8 +65,10 @@ class EventsController {
             arr['img'] = fileName
 
             await Events.findOne({where: {id: arr['id']}}).then(async data => {
-                if (data !== null) {
-                    await fs.unlink(`../events/static/${data.img}`, err => console.log(err))
+                console.log('Это дата', data)
+                if (data) {
+                    console.log('Примерный path', `${__dirname}/../static/${data.img}`)
+                    await fs.unlink(`${__dirname}/events-server/static/${data.img}`, err => console.log(err))
                     await img.img.mv(path.resolve(__dirname, '..', 'static', fileName)).catch(e => {
                         return next(ApiError.internal())
                     })
